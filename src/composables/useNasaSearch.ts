@@ -27,9 +27,7 @@ const page = ref<number>(1);
 
 export function useNasaSearch() {
 	onMounted(async () => {
-		console.log("busca");
 		const searchData = await searchImages(search.value, page.value);
-		console.log(searchData.collection.items);
 		if (searchData.collection.items.length > 0) {
 			const items = searchData.collection.items.map(
 				(item: NasaAPIResponseItem) => {
@@ -42,12 +40,10 @@ export function useNasaSearch() {
 					} as ListItemProps;
 				}
 			);
-			console.log(items);
 			listItems.value = [...listItems.value, ...items];
 		} else {
 			console.error("items not found");
 		}
-		console.log({ searchData, listItems: listItems.value });
 	});
 
 	return { listItems };
