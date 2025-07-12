@@ -42,7 +42,7 @@ export function useNasaSearch() {
 					return {
 						title: item.data[0].title,
 						description: item.data[0].description,
-						keywords: item.data[0].keywords,
+						keywords: item.data[0].keywords ?? [],
 						thumbnail: item.links[0].href,
 						images: "",
 					} as ListItemProps;
