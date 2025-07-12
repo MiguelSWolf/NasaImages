@@ -1,4 +1,4 @@
-import { ref, onMounted, reactive } from "vue";
+import { ref } from "vue";
 import { searchImages } from "@/services/search";
 
 export type ListItemProps = {
@@ -22,12 +22,12 @@ type NasaAPIResponseItem = {
 };
 
 const listItems = ref<ListItemProps[]>([]);
-const search = ref<string>("jupiter");
+const searchText = ref<string>("jupiter");
 const page = ref<number>(1);
 
 export function useNasaSearch() {
-	onMounted(async () => {
-		const searchData = await searchImages(search.value, page.value);
+	async function onSearch() {
+		const searchData = await searchImages(searchText.value, page.value);
 		if (searchData.collection.items.length > 0) {
 			const items = searchData.collection.items.map(
 				(item: NasaAPIResponseItem) => {
@@ -44,7 +44,7 @@ export function useNasaSearch() {
 		} else {
 			console.error("items not found");
 		}
-	});
+	}
 
-	return { listItems, search };
+	return { listItems, searchText, onSearch };
 }
