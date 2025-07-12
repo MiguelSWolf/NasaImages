@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { searchImages } from "@/services/search";
 
 export type ListItemProps = {
@@ -24,9 +24,17 @@ type NasaAPIResponseItem = {
 const listItems = ref<ListItemProps[]>([]);
 const searchText = ref<string>("jupiter");
 const page = ref<number>(1);
+let shouldCleanList = false;
 
 export function useNasaSearch() {
+	watch(
+		() => searchText.value,
+		(oldValue, newValue) => {
+			if (newValue !== oldValue) shouldCleanList = true;
+		}
+	);
 	async function onSearch() {
+		if (shouldCleanList) listItems.value = [];
 		const searchData = await searchImages(searchText.value, page.value);
 		if (searchData.collection.items.length > 0) {
 			const items = searchData.collection.items.map(
