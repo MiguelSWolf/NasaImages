@@ -1,10 +1,11 @@
-<template>
-	<ListWrapper />
-</template>
-
 <script lang="ts" setup>
 	import ListWrapper from "./components/ListWrapper.vue";
 </script>
+<template>
+	<div class="container is-fullhd">
+		<ListWrapper />
+	</div>
+</template>
 
 <style>
 	#app {
