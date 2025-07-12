@@ -1,19 +1,10 @@
 <script lang="ts" setup>
+	import SearchForm from "./components/SearchForm.vue";
 	import ListWrapper from "./components/ListWrapper.vue";
 </script>
 <template>
-	<div class="container is-fullhd">
+	<div class="container is-fullhd py-6">
+		<SearchForm />
 		<ListWrapper />
 	</div>
 </template>
-
-<style>
-	#app {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-		margin-top: 60px;
-	}
-</style>
