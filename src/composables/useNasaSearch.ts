@@ -46,5 +46,5 @@ export function useNasaSearch() {
 		}
 	});
 
-	return { listItems };
+	return { listItems, search };
 }
