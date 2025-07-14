@@ -1,15 +1,13 @@
 <script setup lang="ts">
 	import ListItem from "./ListItem.vue";
 	import { useNasaSearch } from "@/composables/useNasaSearch";
-	const { listItems, search } = useNasaSearch();
+	const { data, isFetching } = useNasaSearch();
 </script>
 <template>
 	<div class="columns is-multiline is-mobile">
-		<div class="column is-full">
-			{{ search }}
-		</div>
+		<div v-if="isFetching">Loading...</div>
 		<ListItem
-			v-for="(item, index) in listItems"
+			v-for="(item, index) in data"
 			:key="index"
 			:thumbnail="item.thumbnail"
 			:title="item.title"

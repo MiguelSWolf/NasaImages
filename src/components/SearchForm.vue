@@ -1,21 +1,17 @@
 <script setup lang="ts">
 	import { useNasaSearch } from "@/composables/useNasaSearch";
 
-	const nasaSearch = useNasaSearch();
+	const { searchText, refetch } = useNasaSearch();
 </script>
 
 <template>
 	<div class="columns">
 		<div class="column is-10 is-offset-1">
-			<form
-				action=""
-				class="form"
-				@submit.prevent="nasaSearch.onSearch()"
-			>
+			<form action="" class="form" @submit.prevent="refetch()">
 				<div class="field has-addons">
 					<div class="control is-expanded">
 						<input
-							v-model="nasaSearch.searchText.value"
+							v-model="searchText"
 							class="input"
 							type="text"
 							placeholder="search..."

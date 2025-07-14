@@ -1,4 +1,5 @@
-import { ref, watch } from "vue";
+import { ref, computed } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { searchImages } from "@/services/search";
 
 export type ListItemProps = {
@@ -21,38 +22,41 @@ type NasaAPIResponseItem = {
 	}[];
 };
 
-const listItems = ref<ListItemProps[]>([]);
-const searchText = ref<string>("jupiter");
-const page = ref<number>(1);
-let shouldCleanList = false;
-
 export function useNasaSearch() {
-	watch(
-		() => searchText.value,
-		(oldValue, newValue) => {
-			if (newValue !== oldValue) shouldCleanList = true;
-		}
-	);
-	async function onSearch() {
-		if (shouldCleanList) listItems.value = [];
-		const searchData = await searchImages(searchText.value, page.value);
-		if (searchData.collection.items.length > 0) {
-			const items = searchData.collection.items.map(
-				(item: NasaAPIResponseItem) => {
-					return {
-						title: item.data[0].title,
-						description: item.data[0].description,
-						keywords: item.data[0].keywords ?? [],
-						thumbnail: item.links[0].href,
-						images: "",
-					} as ListItemProps;
-				}
-			);
-			listItems.value = [...listItems.value, ...items];
-		} else {
-			console.error("items not found");
-		}
-	}
+	const searchText = ref("jupiter");
+	const page = ref(1);
 
-	return { listItems, searchText, onSearch };
+	const queryKey = computed(() => [
+		"nasa-search",
+		searchText.value,
+		page.value,
+	]);
+
+	const { data, refetch, isFetching, error } = useQuery({
+		queryKey,
+		queryFn: async () => {
+			const response = await searchImages(searchText.value, page.value);
+			if (!response?.collection?.items?.length)
+				throw new Error("No items found");
+			return response.collection.items.map(
+				(item: NasaAPIResponseItem): ListItemProps => ({
+					title: item.data[0].title,
+					description: item.data[0].description,
+					keywords: item.data[0].keywords ?? [],
+					thumbnail: item.links?.[0]?.href ?? "",
+					images: "",
+				})
+			);
+		},
+		placeholderData: () => [], // substituto recomendado para `keepPreviousData`
+	});
+
+	return {
+		data,
+		searchText,
+		page,
+		refetch,
+		isFetching,
+		error,
+	};
 }
