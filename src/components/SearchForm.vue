@@ -1,17 +1,23 @@
 <script setup lang="ts">
 	import { useNasaSearch } from "@/composables/useNasaSearch";
+	import { ref } from "vue";
 
-	const { searchText, refetch } = useNasaSearch();
+	const nasaSearch = useNasaSearch();
+	const handleSubmit = () => {
+		nasaSearch.searchText.value = inputSearch.value;
+		nasaSearch.refetch();
+	};
+	const inputSearch = ref("jupiter");
 </script>
 
 <template>
 	<div class="columns">
 		<div class="column is-10 is-offset-1">
-			<form action="" class="form" @submit.prevent="refetch()">
+			<form action="" class="form" @submit.prevent="handleSubmit">
 				<div class="field has-addons">
 					<div class="control is-expanded">
 						<input
-							v-model="searchText"
+							v-model="inputSearch"
 							class="input"
 							type="text"
 							placeholder="search..."

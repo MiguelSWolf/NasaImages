@@ -1,8 +1,9 @@
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { searchImages } from "@/services/search";
 
 export type ListItemProps = {
+	id: string;
 	title: string;
 	description: string;
 	thumbnail: string;
@@ -11,7 +12,13 @@ export type ListItemProps = {
 };
 
 type NasaAPIResponseItem = {
-	data: { title: string; description: string; keywords: string[] }[];
+	data: {
+		nasa_id: string;
+		title: string;
+		description: string;
+		keywords: string[];
+		date_created: string;
+	}[];
 	links: {
 		height: number;
 		href: string;
@@ -26,20 +33,19 @@ export function useNasaSearch() {
 	const searchText = ref("jupiter");
 	const page = ref(1);
 
-	const queryKey = computed(() => [
-		"nasa-search",
-		searchText.value,
-		page.value,
-	]);
+	watch(searchText, () => {
+		page.value = 1;
+	});
 
 	const { data, refetch, isFetching, error } = useQuery({
-		queryKey,
+		queryKey: ["nasa-search", searchText.value],
 		queryFn: async () => {
 			const response = await searchImages(searchText.value, page.value);
 			if (!response?.collection?.items?.length)
 				throw new Error("No items found");
 			return response.collection.items.map(
 				(item: NasaAPIResponseItem): ListItemProps => ({
+					id: item.data[0].nasa_id,
 					title: item.data[0].title,
 					description: item.data[0].description,
 					keywords: item.data[0].keywords ?? [],
@@ -48,11 +54,10 @@ export function useNasaSearch() {
 				})
 			);
 		},
-		placeholderData: () => [], // substituto recomendado para `keepPreviousData`
 	});
 
 	return {
-		data,
+		items: data,
 		searchText,
 		page,
 		refetch,
