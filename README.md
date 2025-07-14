@@ -62,8 +62,6 @@ yarn lint
 │   ├── composables/       # Composables with vue-query logic
 │   ├── services/          # API service to fetch NASA images
 │   └── App.vue            # Main application component
-├── public/
-│   └── preview.png        # Screenshot preview for README
 └── README.md
 ```
 
