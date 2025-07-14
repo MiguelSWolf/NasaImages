@@ -13,7 +13,7 @@
 			:title="item.title"
 			:description="item.description"
 			:keywords="item.keywords"
-			class="column is-one-quarter"
+			class="column is-3-desktop is-4-tablet is-12-mobile"
 		/>
 	</div>
 </template>
