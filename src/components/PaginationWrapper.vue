@@ -1,10 +1,15 @@
 <script setup lang="ts">
 	import { useNasaSearch } from "@/composables/useNasaSearch";
 
-	const { nextPage, prevPage } = useNasaSearch();
+	const { nextPage, prevPage, isFetched } = useNasaSearch();
 </script>
 <template>
-	<nav class="pagination" role="navigation" aria-label="pagination">
+	<nav
+		class="pagination"
+		role="navigation"
+		aria-label="pagination"
+		v-if="isFetched"
+	>
 		<a href="#" @click.prevent="prevPage" class="pagination-previous"
 			>Previous</a
 		>

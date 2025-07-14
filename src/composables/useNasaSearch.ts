@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { searchImages } from "@/services/search";
 
@@ -39,7 +39,7 @@ export function useNasaSearch() {
 		page.value = 1;
 	});
 
-	const { data, refetch, isFetching, error } = useQuery({
+	const { data, refetch, isFetching, error, isFetched } = useQuery({
 		queryKey: ["nasa-search", searchText.value, page.value],
 		queryFn: async () => {
 			const response = await searchImages(searchText.value, page.value);
@@ -73,12 +73,17 @@ export function useNasaSearch() {
 		}
 	};
 
+	onMounted(() => {
+		refetch();
+	});
+
 	return {
 		items: data,
 		searchText,
 		page,
 		refetch,
 		isFetching,
+		isFetched,
 		error,
 		nextPage,
 		prevPage,
