@@ -32,13 +32,15 @@ type NasaAPIResponseItem = {
 export function useNasaSearch() {
 	const searchText = ref("jupiter");
 	const page = ref(1);
-
+	const scrollToTop = () => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
 	watch(searchText, () => {
 		page.value = 1;
 	});
 
 	const { data, refetch, isFetching, error } = useQuery({
-		queryKey: ["nasa-search", searchText.value],
+		queryKey: ["nasa-search", searchText.value, page.value],
 		queryFn: async () => {
 			const response = await searchImages(searchText.value, page.value);
 			if (!response?.collection?.items?.length)
@@ -54,7 +56,22 @@ export function useNasaSearch() {
 				})
 			);
 		},
+		enabled: false,
 	});
+
+	const nextPage = () => {
+		page.value++;
+		refetch();
+		scrollToTop();
+	};
+
+	const prevPage = () => {
+		if (page.value > 1) {
+			page.value--;
+			refetch();
+			scrollToTop();
+		}
+	};
 
 	return {
 		items: data,
@@ -63,5 +80,7 @@ export function useNasaSearch() {
 		refetch,
 		isFetching,
 		error,
+		nextPage,
+		prevPage,
 	};
 }

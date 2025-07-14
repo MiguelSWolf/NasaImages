@@ -1,7 +1,7 @@
 export async function searchImages(query = "jupiter", page = 1) {
 	try {
 		const response = await fetch(
-			`https://images-api.nasa.gov/search?q=${query}`
+			`https://images-api.nasa.gov/search?q=${query}&page=${page}`
 		);
 		if (!response.ok) {
 			throw new Error(`Response status: ${response.status}`);
