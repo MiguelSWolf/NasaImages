@@ -4,8 +4,6 @@ A simple and modern Vue 3 web app to explore NASA public images. Built with **Vu
 
 👉 **Live Demo:** [https://nasa-images-nine.vercel.app/](https://nasa-images-nine.vercel.app/)
 
-![Project Preview](./public/preview.png)
-
 ---
 
 ## ✨ Features
@@ -15,7 +13,6 @@ A simple and modern Vue 3 web app to explore NASA public images. Built with **Vu
 - 🖼️ **Responsive Gallery** with image cards showing title, description, and keywords
 - ⚡ **Optimized API Fetching** with caching via TanStack Query
 - 🖥️ **Responsive Design** for desktop and mobile
-- ⬆️ **Auto Scroll to Top** on page changes
 
 ---
 
@@ -35,3 +32,40 @@ A simple and modern Vue 3 web app to explore NASA public images. Built with **Vu
 ```bash
 git clone https://github.com/your-username/nasa_images.git
 cd nasa_images
+```
+
+### Install dependencies
+
+```bash
+yarn install
+```
+
+### Run the project in development mode
+```bash
+yarn serve
+```
+
+### Build for production
+```bash
+yarn build
+```
+
+### Lint and fix files
+```bash
+yarn lint
+```
+
+## 📁 Project Structure
+```ts
+├── src/
+│   ├── components/        # Vue components (cards, form)
+│   ├── composables/       # Composables with vue-query logic
+│   ├── services/          # API service to fetch NASA images
+│   └── App.vue            # Main application component
+├── public/
+│   └── preview.png        # Screenshot preview for README
+└── README.md
+```
+
+## 📢 About
+This project was created as part of my portfolio to practice Vue 3 with the TanStack Query ecosystem, consume a public API, and deliver a fast and user-friendly interface.
