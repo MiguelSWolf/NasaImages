@@ -7,7 +7,11 @@
 <template>
 	<div class="columns">
 		<div class="column is-10 is-offset-1">
-			<form class="form" @submit="nasaSearch.onSearch()">
+			<form
+				action=""
+				class="form"
+				@submit.prevent="nasaSearch.onSearch()"
+			>
 				<div class="field has-addons">
 					<div class="control is-expanded">
 						<input
